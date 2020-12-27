@@ -4,6 +4,7 @@
 import rospy
 from std_srvs.srv import *
 from nav_msgs.msg import Odometry
+from Server_second_assignment import Server
 
 # service callback
 
@@ -13,8 +14,13 @@ server_position_y=0
 actual_position_x=0
 actual_position_y=0
 
+sub_position=None
+srv_client_go_to_point_ = None
+
 
 def positionCallback(msg):
+    
+    global actual_position_x, actual_position_y
     
     actual_position_x=msg->pose.pose.position.x
     actual_position_y=msg->pose.pose.position.y
@@ -34,10 +40,13 @@ def set_new_pos(req):
     
     
 def move_randomly():
-	rospy.Subscriber("/position", Odometry, positionCallback)
 	
-	server_position_x=rec_pos.response.x
-    server_position_y=rec_pos.response.y
+	global server_position_x, server_position_y
+	
+	server_position_x=sub_position.response.x
+    server_position_y=sub_position.response.y
+    
+    
 	
 	
 	
@@ -45,6 +54,9 @@ def move_randomly():
 
 
 def main():
+	
+	global srv_client_go_to_point_ , sub_position
+	
     rospy.init_node('robot_user_interface')
 
     x = rospy.get_param("des_pos_x")
@@ -52,6 +64,12 @@ def main():
     print("Hi! We are reaching the first position: x = " +
           str(x) + ", y = " + str(y))
     srv = rospy.Service('user_interface', Empty, set_new_pos)
+    
+    srv_client_go_to_point_ = rospy.ServiceProxy(
+        '/go_to_point_switch', SetBool)
+    sub_position=rospy.Subscriber("/odom", Odometry, positionCallback)
+    srv_positon=rospy.Service('/position', Empty, handle_add_two_ints)
+    
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
         rate.sleep()
