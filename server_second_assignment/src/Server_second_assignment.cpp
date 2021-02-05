@@ -11,7 +11,7 @@ bool myrandom (Server_second_assignment::Server_second_assignment::Request &req,
 	
 	    res.x = x_values[index];
         res.y = y_values[index];
-        ROS_INFO("Position values: x[%f] y[%f]", res.x, res.y);
+        ROS_INFO("\nPosition values: x[%f] y[%f]", res.x, res.y);
     return true;
 }
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv)
    ros::init(argc, argv, "Server_second_assignment");
    ros::NodeHandle n;
    ros::ServiceServer service= n.advertiseService("/position", myrandom);
-   ROS_INFO("Server activated");
+   ROS_INFO("Server activated \n");
    ros::spin();
 
    return 0;

@@ -10,6 +10,7 @@
     <param name="des_pos_y" value="$(arg des_y)" />
     <node pkg="robot_description" type="wall_follow_service_m.py" name="wall_follower" />
     <node pkg="robot_description" type="go_to_point_service_m.py" name="go_to_point" />
+    <node pkg="Second_assignment" type="Server_second_assignment" name="Server_second_assignment"/>
     <node pkg="Second_assignment" type="robot_user_interface.py" name="robot_user_interface" output="screen" />
     <node pkg="robot_description" type="bug_m.py" name="bug" />
 </launch>
