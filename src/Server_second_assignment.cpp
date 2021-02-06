@@ -1,8 +1,8 @@
 #include "ros/ros.h"
-#include "Server_second_assignment/Server_second_assignment.h"
+#include "second_assignment/Server_second_assignment.h"
 
 
-bool myrandom (Server_second_assignment::Server_second_assignment::Request &req, Server_second_assignment::Server_second_assignment::Response &res){
+bool myrandom (second_assignment::Server_second_assignment::Request &req, second_assignment::Server_second_assignment::Response &res){
 	
     float x_values[]={-4, -4, -4, 5, 5, 5};
 	float y_values[]={-3, 2, 7, -7, -3, 1};
@@ -19,7 +19,7 @@ bool myrandom (Server_second_assignment::Server_second_assignment::Request &req,
 
 int main(int argc, char **argv)
 {
-   ros::init(argc, argv, "Server_second_assignment");
+   ros::init(argc, argv, "server_second_assignment");
    ros::NodeHandle n;
    ros::ServiceServer service= n.advertiseService("/position", myrandom);
    ROS_INFO("Server activated \n");

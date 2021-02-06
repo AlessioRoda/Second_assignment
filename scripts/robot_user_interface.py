@@ -5,8 +5,8 @@ import rospy
 from std_srvs.srv import *
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
-from Server_second_assignment import Server
-from move_base_msg.msg import MoveBaseActionGoal
+from second_assignment import *
+from move_base_msgs.msg import MoveBaseActionGoal
 
 import math
 
@@ -38,7 +38,7 @@ def positionCallback(msg):
     
     actual_position=msg.pose.pose.position
     
-        quaternion = (
+    quaternion = (
         msg.pose.pose.orientation.x,
         msg.pose.pose.orientation.y,
         msg.pose.pose.orientation.z,
@@ -56,46 +56,36 @@ def user_set_position():
     x = float(raw_input('x :'))
     y = float(raw_input('y :'))
     
-    bool catchable_position=False
-    
-    switch (y):
-		case -3:
-			if(x==-4 OR x==5)
-			  catchable_position=True
-			  break
-		
-		case 2:
-			if(x==-4)
-			  catchable_position=True
-			  break	
-		
-		case 7:
-			if(x==-4)
-			  catchable_position=True
-			  break
-		
-		case -7:
-			if(x==5)
-			  catchable_position=True
-			  break	
-			
-		case 1:
-			if(x==5)
-			  catchable_position=True
-			  break
-		
-		default:
-			catchable_position=False
-			break				
     
     
-        if (catchable_position==True)
-          set_target_position(x,y)
+    ## Now to choose the target we consider the only possible cases we have
+    
+    if (y==-3 and x==-4 or x==5):
+            catchable_position=True
+    
+    elif (y==2 and x==-4):
+            catchable_position=True
           
-          resp = srv_client_wall_follower_(False)
-          
-        else
-          print("\nThe position you insert is not correct")  
+    elif(y==7 and x==-4):
+            catchable_position=True
+            
+    elif(y==-7 and x==5):
+            catchable_position=True
+            
+    elif(y==1 and x==5):
+            catchable_position=True
+            
+    else:
+            catchable_position=False
+				
+
+    if (catchable_position==True):
+            set_target_position(x,y)
+            resp = srv_client_wall_follower_(False)
+
+    else:
+            print("\nThe position you insert is not correct")
+	    
      
     
     
@@ -123,7 +113,6 @@ def move_randomly():
 
 def follow_wall():
 	
-	resp = srv_client_go_to_point(False)
 	resp = srv_client_wall_follower(True)
 	
 
@@ -152,9 +141,10 @@ def set_target_position(target_x, target_y):
 	move_goal.goal.target_pose.pose.position.y = target_y
 	pub.publish(move_goal)
 	
-    print("\nLet's reach the position x: ", target_x, "y: ", target_y)
+	print("\nLet's reach the position x: ", target_x, "y: ", target_y)
+	
+	response= srv_client_user_interface()
     
-    response= srv_client_user_interface()
 	
 
 def distance():
@@ -183,50 +173,41 @@ def main():
    
     srv_client_go_to_point_ = rospy.ServiceProxy(
         '/go_to_point_switch', SetBool)
+    resp = srv_client_go_to_point(False)
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
     srv_pos= rospy.ServiceProxy('/position', Server_second_assignment)
     srv_client_user_interface = rospy.ServiceProxy('/user_interface', Empty)
-        
-        
-        
-	while(-1)
-	  
-	  print("\nTarget to reach: x= ", goal_x, "y= ", goal_y)
-	  distance()
-	
-	    #I give a general command for the user interface
-        print("Please give me a new command between the following\n")
-        print("1- To move in a random position\n2- To move in a specific position\n
-               3- Start following the external walls\n4- Stop in last position")
-               
-	    command=int(raw_input())
-	    
-	    switch(command):
-			
-			case(1):
-				move_randomly()
-				break
+    
+    
+    while(-1):
 		
-		    case(2):
-				user_set_position()
-				break
-				
-			case(3):
-				follow_wall()
-				break
-				
-			case(4):
-				stop_robot()
-				break
-				
-			default:
-				print("\nProbably you choose a command not allowed, please try again")
-				break		
+		print("\nTarget to reach: x= ", goal_x, "y= ", goal_y)
+		distance()
+		
+		print("Please give me a new command between the following\n")
+		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow texternal walls\n4- Stop in last position")
+		
+		command=int(raw_input())
+		
+		if(command==1):
+			move_randomly()
+		
+		elif(command==2):
+			user_set_position()
+		
+		elif(command==3):
+			follow_wall()
+			
+		elif(command==4):
+			stop_robot()
+			
+		else:
+			print("\nProbably you choose a command not allowed, please try again")
+		
+			
         
-
         
-
 
 if __name__ == '__main__':
     main()
