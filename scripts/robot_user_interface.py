@@ -5,7 +5,7 @@ import rospy
 from std_srvs.srv import *
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
-from second_assignment import *
+from second_assignment.srv import *
 from move_base_msgs.msg import MoveBaseActionGoal
 
 import math
@@ -38,13 +38,6 @@ def positionCallback(msg):
     
     actual_position=msg.pose.pose.position
     
-    quaternion = (
-        msg.pose.pose.orientation.x,
-        msg.pose.pose.orientation.y,
-        msg.pose.pose.orientation.z,
-        msg.pose.pose.orientation.w)
-    euler = transformations.euler_from_quaternion(quaternion)
-    yaw_ = euler[2]
 
 
 
@@ -92,15 +85,15 @@ def user_set_position():
     
 ## Function to move in the direction received frome the server     
 def move_randomly():
-	
+	global srv_client_wall_follower, srv_pos
 	
 	## We have to ensure that the client wall_follower is disabled 
 	resp = srv_client_wall_follower(False)
 	resp = srv_pos()
 	
 	
-	rospy.set_param("des_position_x", server_position.x)
-	rospy.set_param("des_position_y", server_position.y)
+	rospy.set_param("des_position_x", Server_second_assignment.x)
+	rospy.set_param("des_position_y", Server_second_assignment.y)
 	
 	## I set the goal position as the one received from the server
 	goal_x= rospy.get_param('des_position_x')
@@ -126,6 +119,8 @@ def stop_robot():
 	move_goal.goal.target_pose.pose.position.x = actual_position.x
 	move_goal.goal.target_pose.pose.position.y = actual_position.y
 	pub.publish(move_goal)
+	
+	print("Robot has been stoped in position x="+str(actual_position.x)+", y="+str(actual_position.y))
 	
 	
 	
@@ -162,10 +157,11 @@ def distance():
 
 def main():
 	
+    global srv_client_wall_follower, srv_pos
+	
     rospy.init_node('robot_user_interface')
     
     sub_odom=rospy.Subscriber("/odom", Odometry, positionCallback)
-    sub_srv_positon=rospy.Service('/position', Empty, server_positionCallback)
     
    # rate = rospy.Rate(20)
    # while not rospy.is_shutdown():
@@ -173,7 +169,7 @@ def main():
    
     srv_client_go_to_point_ = rospy.ServiceProxy(
         '/go_to_point_switch', SetBool)
-    resp = srv_client_go_to_point(False)
+    #resp = srv_client_go_to_point(False)
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
     srv_pos= rospy.ServiceProxy('/position', Server_second_assignment)
@@ -186,7 +182,7 @@ def main():
 		distance()
 		
 		print("Please give me a new command between the following\n")
-		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow texternal walls\n4- Stop in last position")
+		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow external walls\n4- Stop in last position")
 		
 		command=int(raw_input())
 		
