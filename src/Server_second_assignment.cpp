@@ -1,11 +1,14 @@
 #include "ros/ros.h"
 #include "second_assignment/Server_second_assignment.h"
+#include <ctime>
 
 
 bool myrandom (second_assignment::Server_second_assignment::Request &req, second_assignment::Server_second_assignment::Response &res){
 	
     float x_values[]={-4, -4, -4, 5, 5, 5};
 	float y_values[]={-3, 2, 7, -7, -3, 1};
+	
+	srand((unsigned) time(0));
 	
 	int index=rand()%6;  
 	
