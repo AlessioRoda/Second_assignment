@@ -7,6 +7,7 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
 from second_assignment.srv import *
 from move_base_msgs.msg import MoveBaseActionGoal
+from geometry_msgs.msg import Twist
 
 import math
 
@@ -18,6 +19,8 @@ actual_position=Point()
 goal_x=0
 goal_y=0
 
+set_target=False
+
 ## Distance to the target
 dist=0
 
@@ -25,7 +28,8 @@ yaw_ = 0
 
 
 ## Initialize a general publisher
-pub=None
+pub_move_base=None
+pub_move_twist=None
 sub_odom=None
 
 srv_client_go_to_point = None
@@ -34,9 +38,12 @@ srv_client_user_interface = None
 
 
 def positionCallback(msg):
+	
+    global actual_position
     
     
     actual_position=msg.pose.pose.position
+    
     
 
 
@@ -92,12 +99,11 @@ def move_randomly():
 	resp = srv_pos()
 	
 	
-	rospy.set_param("des_position_x", Server_second_assignment.x)
-	rospy.set_param("des_position_y", Server_second_assignment.y)
-	
 	## I set the goal position as the one received from the server
-	goal_x= rospy.get_param('des_position_x')
-	goal_y= rospy.get_param('des_position_y')
+	goal_x= resp.x
+	goal_y= resp.y
+	
+	print("Server position: x="+str(goal_x)+" y="+str(goal_y))
 	
 	## Call the generic funtion to set the new target position
 	set_target_position(goal_x, goal_y)
@@ -112,20 +118,26 @@ def follow_wall():
 ## To stop the robot I set my target goal in the position in wich the robot is
 def stop_robot():
 	
+	global set_target
+	
 	move_goal = MoveBaseActionGoal()
 	move_goal.goal.target_pose.header.frame_id="map"
 	move_goal.goal.target_pose.pose.orientation.w=1
 
 	move_goal.goal.target_pose.pose.position.x = actual_position.x
 	move_goal.goal.target_pose.pose.position.y = actual_position.y
-	pub.publish(move_goal)
+	pub_move_base.publish(move_goal)
 	
 	print("Robot has been stoped in position x="+str(actual_position.x)+", y="+str(actual_position.y))
+	
+	set_target=False
 	
 	
 	
 
 def set_target_position(target_x, target_y):
+	
+	global resp, srv_client_user_interface, set_target, pub_move_base
 	
 	## Initialize a MoveActionGoal target to move my robot
 	move_goal = MoveBaseActionGoal()
@@ -134,11 +146,13 @@ def set_target_position(target_x, target_y):
 
 	move_goal.goal.target_pose.pose.position.x = target_x
 	move_goal.goal.target_pose.pose.position.y = target_y
-	pub.publish(move_goal)
+	pub_move_base.publish(move_goal)
 	
 	print("\nLet's reach the position x: ", target_x, "y: ", target_y)
 	
-	response= srv_client_user_interface()
+	set_target=True
+	
+	resp= srv_client_user_interface()
     
 	
 
@@ -157,7 +171,7 @@ def distance():
 
 def main():
 	
-    global srv_client_wall_follower, srv_pos
+    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, srv_client_user_interface, set_target
 	
     rospy.init_node('robot_user_interface')
     
@@ -167,22 +181,30 @@ def main():
    # while not rospy.is_shutdown():
    #     rate.sleep()
    
+   #Pubblisher to pubblsh the poition in wich we want the robot to go
+    pub_move_base=rospy.Publisher('/move_base_msgs', MoveBaseActionGoal, queue_size=1)
+    pub_twist = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+   
     srv_client_go_to_point_ = rospy.ServiceProxy(
         '/go_to_point_switch', SetBool)
     #resp = srv_client_go_to_point(False)
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
     srv_pos= rospy.ServiceProxy('/position', Server_second_assignment)
-    srv_client_user_interface = rospy.ServiceProxy('/user_interface', Empty)
+    srv_client_user_interface = rospy.ServiceProxy('/robot_user_interface', Empty)
     
     
     while(-1):
 		
-		print("\nTarget to reach: x= ", goal_x, "y= ", goal_y)
-		distance()
+		
+		if(set_target==True):
+			print("\nTarget to reach: x= ", goal_x, "y= ", goal_y)
+			distance()
 		
 		print("Please give me a new command between the following\n")
 		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow external walls\n4- Stop in last position")
+		
+		command=0
 		
 		command=int(raw_input())
 		
@@ -197,6 +219,11 @@ def main():
 			
 		elif(command==4):
 			stop_robot()
+		
+		#sono da rimuovere
+		elif(command==5):
+			print("Actual position is x="+str(actual_position.x)+" y="+str(actual_position.y))
+			
 			
 		else:
 			print("\nProbably you choose a command not allowed, please try again")
