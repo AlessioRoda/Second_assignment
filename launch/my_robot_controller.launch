@@ -2,12 +2,7 @@
 
 <launch>
     
-    <arg name="des_x" default= "-4"/>
-    <arg name="des_y" default= "7"/>
-    <param name="des_pos_x" value="$(arg des_x)" />
-    <param name="des_pos_y" value="$(arg des_y)" />
     <node pkg="final_assignment" type="wall_follow_service_m.py" name="wall_follower" />
-    <node pkg="final_assignment" type="go_to_point_service_m.py" name="go_to_point" />
 
     <node pkg="second_assignment" type="server_second_assignment" name="server_second_assignment" output="screen"/>
     <node pkg="second_assignment" type="robot_user_interface.py" name="robot_user_interface" output="screen" />

@@ -12,8 +12,6 @@ from geometry_msgs.msg import Twist
 
 import math
 
-# service callback
-
 actual_position=Point()
 
 ## Variables to save the value of the target we want to receive
@@ -27,39 +25,41 @@ dist=0
 
 yaw_ = 0
 
-
 ## Initialize a general publisher
 pub_move_base=None
 pub_twist=None
 sub_odom=None
 
-srv_client_go_to_point = None
 srv_client_wall_follower = None
-srv_client_user_interface = None
 
 
 def positionCallback(msg):
 	
     global actual_position
-    
-    
     actual_position=msg.pose.pose.position
     
     
-
-
-
-
+    
 ## Function to get a new position from the user and check that it's one of the cathcable positions
 def user_set_position():
 	
-    print("\n Please insert a position")
-    x = float(raw_input('x :'))
-    y = float(raw_input('y :'))
+    global srv_client_wall_follower
     
     catchable_position=False
     
+    x=0
+    y=0
+    
     while(catchable_position==False):
+		
+		print("\n Please insert a position between {[-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1]}")
+		
+		try:
+			x = float(raw_input('x :'))
+			y = float(raw_input('y :'))
+		except:
+			print("Char characters are not allowed, let's exit \n")
+			break
     
 		## Now to choose the target we consider the only possible cases we have
 		
@@ -84,10 +84,10 @@ def user_set_position():
 
 		if (catchable_position==True):
 				set_target_position(x,y)
-				resp = srv_client_wall_follower_(False)
+				resp = srv_client_wall_follower(False)
 
 		else:
-				print("\nThe position you insert is not correct, try again, otherwise ")
+				print("\nThe position you insert is not correct, try again, otherwise digit a string to exit")
 	    
      
     
@@ -95,23 +95,19 @@ def user_set_position():
     
 ## Function to move in the direction received frome the server     
 def move_randomly():
-	global srv_client_wall_follower, srv_pos, goal_x, goal_y, actual_position
+	global srv_client_wall_follower, srv_pos, actual_position
 	
 	## We have to ensure that the client wall_follower is disabled 
-	resp = srv_client_wall_follower(False)
-	resp = srv_pos()
-	
-	
-	## I set the goal position as the one received from the server
-	goal_x= resp.x
-	goal_y= resp.y
+	srv_client_wall_follower(False)
 	
 	print("\nServer position: x="+str(goal_x)+" y="+str(goal_y))
 	
 	print("\nActual robot position: "+str(actual_position))
+
+	resp=srv_pos()
 	
 	## Call the generic funtion to set the new target position
-	set_target_position(goal_x, goal_y)
+	set_target_position(resp.x, resp.y)
 	
 	return
     
@@ -121,6 +117,7 @@ def follow_wall():
 	
 	global srv_client_wall_follower
 	
+	print("\n Let's follow the external walls")
 	srv_client_wall_follower(True)
 	
 	return
@@ -130,6 +127,7 @@ def follow_wall():
 def stop_robot():
 	
 	global set_target, pub_move_base, srv_client_wall_follower, pub_twist
+	global goal_x, goal_y
 	
 	## I have to check that the robot doesn't follow thr wall
 	resp = srv_client_wall_follower(False)
@@ -150,7 +148,10 @@ def stop_robot():
 	
 	print("Robot has been stoped in position x="+str(actual_position.x)+", y="+str(actual_position.y))
 	
-	set_target=False
+	## I set the goal position as the last position in wich I am
+	goal_x=actual_position.x
+	goal_y=actual_position.y
+	
 	
 	return
 	
@@ -159,9 +160,9 @@ def stop_robot():
 
 def set_target_position(target_x, target_y):
 	
-	global resp, srv_client_user_interface, set_target, pub_move_base, srv_client_go_to_point
+	global resp, srv_client_user_interface, set_target, pub_move_base
+	global goal_x, goal_y
 	
-	srv_client_go_to_point(True)
 	
 	## Initialize a MoveActionGoal target to move my robot
 	move_goal = MoveBaseActionGoal()
@@ -176,7 +177,11 @@ def set_target_position(target_x, target_y):
 	
 	print("\n Let's reach the position x="+str(target_x)+" y="+str(target_y))
 	
-	set_target=True
+	## I set the goal position as the one I received 
+	goal_x=target_x
+	goal_y=target_y
+	
+	distance()
 	
 	
 	return
@@ -184,6 +189,8 @@ def set_target_position(target_x, target_y):
 	
 
 def distance():
+	
+	global goal_x, goal_y
 	
 	dist_x= actual_position.x-goal_x
 	dist_y= actual_position.y-goal_y
@@ -195,12 +202,11 @@ def distance():
 	return
 	
 		
-	
 
 
 def main():
 	
-    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, srv_client_user_interface, set_target, srv_client_go_to_point
+    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, set_target
 	
     rospy.init_node('robot_user_interface')
     
@@ -211,8 +217,6 @@ def main():
     pub_move_base=rospy.Publisher('move_base/goal', MoveBaseActionGoal, queue_size=1)
     pub_twist = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
    
-    srv_client_go_to_point = rospy.ServiceProxy(
-        '/go_to_point_switch', SetBool)
     #resp = srv_client_go_to_point(False)
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
@@ -221,9 +225,6 @@ def main():
     
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
-		if(set_target==True):
-			print("\n Target to reach: x="+ str(goal_x)+ " y="+str(goal_y))
-			distance()
 
 		print("Please give me a new command between the following\n")
 		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow external walls\n4- Stop in last position")
@@ -256,8 +257,6 @@ def main():
     
 		
 			
-        
-        
 
 if __name__ == '__main__':
     main()
