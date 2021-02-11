@@ -8,6 +8,7 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
 from second_assignment.srv import *
 from move_base_msgs.msg import MoveBaseActionGoal
+from actionlib_msgs.msg import GoalID
 from geometry_msgs.msg import Twist
 
 import math
@@ -17,6 +18,9 @@ actual_position=Point()
 ## Variables to save the value of the target we want to receive
 goal_x=0
 goal_y=0
+
+## Variable to generate a message to reached position in the positionCallback
+notify=False
 
 set_target=False
 
@@ -35,8 +39,12 @@ srv_client_wall_follower = None
 
 def positionCallback(msg):
 	
-    global actual_position
+    global actual_position, goal_x, goal_y, notify
     actual_position=msg.pose.pose.position
+    
+    if (distance()<=1 and notify==True):
+		print("\nTarget reached!")
+		notify=False
     
     
     
@@ -100,8 +108,6 @@ def move_randomly():
 	## We have to ensure that the client wall_follower is disabled 
 	srv_client_wall_follower(False)
 	
-	print("\nServer position: x="+str(goal_x)+" y="+str(goal_y))
-	
 	print("\nActual robot position: "+str(actual_position))
 
 	resp=srv_pos()
@@ -127,7 +133,7 @@ def follow_wall():
 def stop_robot():
 	
 	global set_target, pub_move_base, srv_client_wall_follower, pub_twist
-	global goal_x, goal_y
+	global goal_x, goal_y, notify
 	
 	## I have to check that the robot doesn't follow thr wall
 	resp = srv_client_wall_follower(False)
@@ -148,6 +154,9 @@ def stop_robot():
 	
 	print("Robot has been stoped in position x="+str(actual_position.x)+", y="+str(actual_position.y))
 	
+	## To not generate a message to reached position
+	notify=False
+	
 	## I set the goal position as the last position in wich I am
 	goal_x=actual_position.x
 	goal_y=actual_position.y
@@ -161,7 +170,7 @@ def stop_robot():
 def set_target_position(target_x, target_y):
 	
 	global resp, srv_client_user_interface, set_target, pub_move_base
-	global goal_x, goal_y
+	global goal_x, goal_y, notify
 	
 	
 	## Initialize a MoveActionGoal target to move my robot
@@ -181,7 +190,9 @@ def set_target_position(target_x, target_y):
 	goal_x=target_x
 	goal_y=target_y
 	
-	distance()
+	notify=True
+	
+	print ("\n Distance to the target: "+str(distance()))
 	
 	
 	return
@@ -190,23 +201,21 @@ def set_target_position(target_x, target_y):
 
 def distance():
 	
-	global goal_x, goal_y
+	global goal_x, goal_y, actual_position
 	
 	dist_x= actual_position.x-goal_x
 	dist_y= actual_position.y-goal_y
 	
 	dist=math.sqrt(pow(dist_x, 2)+pow(dist_y, 2))
 	
-	print ("\n Distance to the target: "+str(dist))
-	
-	return
+	return dist
 	
 		
 
 
 def main():
 	
-    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, set_target
+    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, set_target, actual_position
 	
     rospy.init_node('robot_user_interface')
     
@@ -226,8 +235,10 @@ def main():
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
 
-		print("Please give me a new command between the following\n")
+		print("\nPlease give me a new command between the following\n")
 		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow external walls\n4- Stop in last position")
+		
+		print("ACTUAL POSITION: ", actual_position)
 
 		command=0
 
@@ -259,4 +270,6 @@ def main():
 			
 
 if __name__ == '__main__':
+	## Short wait since other scripts have to be launched
+    time.sleep(2)
     main()

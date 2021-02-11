@@ -12,8 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  turtlesim
   message_generation
+  move_base_msgs
   nav_msgs 
   sensor_msgs
 )

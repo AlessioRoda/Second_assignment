@@ -14,7 +14,7 @@ bool myrandom (second_assignment::Server_second_assignment::Request &req, second
 	
 	    res.x = x_values[index];
         res.y = y_values[index];
-        ROS_INFO("\nPosition values: x[%f] y[%f]", res.x, res.y);
+        ROS_INFO("\nServer position: x[%f] y[%f]", res.x, res.y);
     return true;
 }
 
