@@ -8,7 +8,6 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point
 from second_assignment.srv import *
 from move_base_msgs.msg import MoveBaseActionGoal
-from actionlib_msgs.msg import GoalID
 from geometry_msgs.msg import Twist
 
 import math
@@ -181,7 +180,6 @@ def set_target_position(target_x, target_y):
 	move_goal.goal.target_pose.pose.position.x = target_x
 	move_goal.goal.target_pose.pose.position.y = target_y
 	
-	print("INFO move_goal: "+str(move_goal))
 	pub_move_base.publish(move_goal)
 	
 	print("\n Let's reach the position x="+str(target_x)+" y="+str(target_y))
@@ -215,7 +213,7 @@ def distance():
 
 def main():
 	
-    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, set_target, actual_position
+    global srv_client_wall_follower, srv_pos, pub_move_base, pub_twist, set_target
 	
     rospy.init_node('robot_user_interface')
     
@@ -238,7 +236,6 @@ def main():
 		print("\nPlease give me a new command between the following\n")
 		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow external walls\n4- Stop in last position")
 		
-		print("ACTUAL POSITION: ", actual_position)
 
 		command=0
 
