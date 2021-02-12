@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <launch>
-    
+	
     <include file="$(find gmapping)/launch/move_base.launch"></include>
     <node pkg="final_assignment" type="wall_follow_service_m.py" name="wall_follower" />
 

@@ -23,19 +23,22 @@ notify=False
 
 set_target=False
 
-## Distance to the target
+## Initialize the distance to the target
 dist=0
 
-yaw_ = 0
 
-## Initialize a general publisher
+## Initialize the publishers
 pub_move_base=None
 pub_twist=None
+
+## Initialize the odom subscriber
 sub_odom=None
 
+## Initialize the wall_follower client
 srv_client_wall_follower = None
 
 
+## Callback to constantly get the robot position
 def positionCallback(msg):
 	
     global actual_position, goal_x, goal_y, notify
@@ -47,11 +50,12 @@ def positionCallback(msg):
     
     
     
-## Function to get a new position from the user and check that it's one of the cathcable positions
+## Function to get a new position from the user and check that it's one of the catchable positions
 def user_set_position():
 	
     global srv_client_wall_follower
     
+    ## Initialize the variable to decide if the position can be gotten or not
     catchable_position=False
     
     x=0
@@ -61,9 +65,12 @@ def user_set_position():
 		
 		print("\n Please insert a position between {[-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1]}")
 		
+		## Check if the input that user give me is a number or not
 		try:
 			x = float(raw_input('x :'))
 			y = float(raw_input('y :'))
+			
+		## If the input is not a number come back to the main user interface (this can also be a way to exit from this functon without giving an input)	
 		except:
 			print("Char characters are not allowed, let's exit \n")
 			break
@@ -90,7 +97,9 @@ def user_set_position():
 					
 
 		if (catchable_position==True):
+			    ## Send the values to the general function to reach a target
 				set_target_position(x,y)
+				## Make sure that the robot can't follow the wall
 				resp = srv_client_wall_follower(False)
 
 		else:
@@ -100,7 +109,7 @@ def user_set_position():
     
     
     
-## Function to move in the direction received frome the server     
+## Function to move in the direction received from the server     
 def move_randomly():
 	global srv_client_wall_follower, srv_pos, actual_position
 	
@@ -117,7 +126,7 @@ def move_randomly():
 	return
     
     
-
+## Function to amke the robot follow the external walls
 def follow_wall():
 	
 	global srv_client_wall_follower
@@ -128,7 +137,7 @@ def follow_wall():
 	return
 	
 
-## To stop the robot I set my target goal in the position in wich the robot is
+## To stop the robot I set the linear velocity values to 0, evenmore I set the target to reach to the position in wich robot is to make sure it won't try to reach another position
 def stop_robot():
 	
 	global set_target, pub_move_base, srv_client_wall_follower, pub_twist
@@ -137,6 +146,7 @@ def stop_robot():
 	## I have to check that the robot doesn't follow thr wall
 	resp = srv_client_wall_follower(False)
 	
+	## Set the value of velocity to 0	
 	velocity=Twist()
 	velocity.linear.x=0
 	velocity.linear.y=0
@@ -148,6 +158,7 @@ def stop_robot():
 	move_goal.goal.target_pose.pose.position.x = actual_position.x
 	move_goal.goal.target_pose.pose.position.y = actual_position.y
 	pub_move_base.publish(move_goal)
+		
 	
 	pub_twist.publish(velocity)
 	
@@ -165,14 +176,13 @@ def stop_robot():
 	
 	
 	
-
+## This function get two parameters, target_x and target_y and set the target position in wich robot has to go
 def set_target_position(target_x, target_y):
 	
 	global resp, srv_client_user_interface, set_target, pub_move_base
 	global goal_x, goal_y, notify
 	
-	
-	## Initialize a MoveActionGoal target to move my robot
+	## Initialize a MoveBaseActionGoal target to move my robot
 	move_goal = MoveBaseActionGoal()
 	move_goal.goal.target_pose.header.frame_id="map"
 	move_goal.goal.target_pose.pose.orientation.w=1
@@ -188,15 +198,17 @@ def set_target_position(target_x, target_y):
 	goal_x=target_x
 	goal_y=target_y
 	
+	## Set the variable notify to true to be allerted when the robot reaches the target
 	notify=True
 	
+	## Print the distance beteen the robot and the target
 	print ("\n Distance to the target: "+str(distance()))
 	
 	
 	return
     
 	
-
+## Function to estimate the value of the distance between the robot positon and the target it has to reach
 def distance():
 	
 	global goal_x, goal_y, actual_position
@@ -204,6 +216,7 @@ def distance():
 	dist_x= actual_position.x-goal_x
 	dist_y= actual_position.y-goal_y
 	
+	## To estimate the distance we use the vector dsitance from the coordinate of the position
 	dist=math.sqrt(pow(dist_x, 2)+pow(dist_y, 2))
 	
 	return dist
@@ -217,26 +230,32 @@ def main():
 	
     rospy.init_node('robot_user_interface')
     
+    
+    ## Subscribe to Odom service to get the robot position
     sub_odom=rospy.Subscriber("/odom", Odometry, positionCallback)
     
    
-   #Pubblisher to pubblsh the poition in wich we want the robot to go
+   #Pubblisher to pubblsh the poition in wich we want the robot to go and the velocity we want to set
     pub_move_base=rospy.Publisher('move_base/goal', MoveBaseActionGoal, queue_size=1)
     pub_twist = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
    
-    #resp = srv_client_go_to_point(False)
+    ## To make the robot follow the wall we use the already implemented wall_follower_switch algorithm
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
+    ## Connect to the server Server_second_assignment
     srv_pos= rospy.ServiceProxy('/position', Server_second_assignment)
     
     
     rate = rospy.Rate(20)
+    
+    ## For the entire execution of the program it's shown an user interface to get the command the robot has to execute:
+    ## robot can move in a random position, move in a specific position, follow the walls or stop in the last position.
     while not rospy.is_shutdown():
 
 		print("\nPlease give me a new command between the following\n")
 		print("1- To move in a random position\n2- To move in a specific position\n3- Start to follow external walls\n4- Stop in last position")
 		
-
+        ## Initialize variable command to 0
 		command=0
 
 		command=int(raw_input())
@@ -252,12 +271,8 @@ def main():
 			
 		elif(command==4):
 			stop_robot()
-
-		#sono da rimuovere
-		elif(command==5):
-			print("Actual position is x="+str(actual_position.x)+" y="+str(actual_position.y))
 			
-			
+		## If there's a not allowed command user has to give the command again	
 		else:
 			print("\n Probably you choose a command not allowed, please try again")
 		
@@ -267,6 +282,6 @@ def main():
 			
 
 if __name__ == '__main__':
-	## Short wait since other scripts have to be launched
+	## Since there are other scripts to be launched at the beginning this program waits 2 seconds, so the logs of the scripts aren't printed together
     time.sleep(2)
     main()
