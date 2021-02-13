@@ -14,7 +14,7 @@ import math
 
 actual_position=Point()
 
-## Variables to save the value of the target roboto has to reach
+## Variables to save the value of the target robot has to reach
 goal_x=0
 goal_y=0
 

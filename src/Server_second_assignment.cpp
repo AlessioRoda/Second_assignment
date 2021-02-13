@@ -2,7 +2,7 @@
 #include "second_assignment/Server_second_assignment.h"
 #include <ctime>
 
-
+/**Function to obtain a random position*/
 bool myrandom (second_assignment::Server_second_assignment::Request &req, second_assignment::Server_second_assignment::Response &res){
 	
     float x_values[]={-4, -4, -4, 5, 5, 5};
@@ -10,8 +10,10 @@ bool myrandom (second_assignment::Server_second_assignment::Request &req, second
 	
 	srand((unsigned) time(0));
 	
+	/**Generate a random number*/
 	int index=rand()%6;  
 	
+	    /**Use the random number as an index for the array*/
 	    res.x = x_values[index];
         res.y = y_values[index];
         ROS_INFO("\nServer position: x[%f] y[%f]", res.x, res.y);
