@@ -20,13 +20,13 @@ The first one contains a launch file who permits to execute the entire program, 
 
 In the "scripts" folder it's contained the robot_user_inteface.py script, that is the user interface of the program. Here the program asks to the user to give him the comamnds to decide wich operation should it execute and to do that it calls the services that are launched previously with the launch file.
 
-The "src" folder contains the server_second_assignment.cpp code, that is a server that teturns randomly one of the six allowed positions.
+The "src" folder contains the server_second_assignment.cpp code, that is a server that returns randomly one of the six allowed positions.
 
 The "srv" folder contains a file to define the type of the data that are returned from the server.
 
 ## Comunication between nodes 
 
-
+<br />
 ![rosgraph](https://user-images.githubusercontent.com/48511957/107848524-59255a00-6df4-11eb-8f9f-f9fe00d28803.png)
 
 <br />
@@ -36,4 +36,12 @@ The robot_user_interface also move the robot in a certain position by sending a 
 
 ## Robot behaviors and software architecture 
 
+First at the beginning of the execution the nodes /robot_user_interface and /server_second_assignment initialize the publishers and the subscibers with respect to the oter running nodes. After that the main part of the robot_user_interface has to ask in a innfinite time loop the commands to the user
+
+1) To randomly move ina one of the allowed positions
+2) Ask user to choose the target position for the robot
+3) Let the robot following the external walls 
+4) Stop the robot 
+
+As previously mentioned, not all the positons are allowed, only positions: [-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1]
 
