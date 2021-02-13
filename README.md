@@ -32,7 +32,7 @@ The "srv" folder contains a file to define the type of the data that are returne
 
 
 As it's possible to see in the picture, this is how the nodes communicate to each others: what it's interesting to consider is that the robot_user_interface node get the odom data to obtain the position of the robot in the map (by subscribing to the odom service) and can set the velocity of the robot by publishing a cmd_vel message to the Twist publisher.
-The robot_user_interface also move the robot in a certain position by sending a message of type move_base_msgs/MoveBaseActionGoal.
+The robot_user_interface also moves the robot in a certain position by sending a message of type move_base_msgs/MoveBaseActionGoal.
 
 ## Robot behaviors and software architecture
 
