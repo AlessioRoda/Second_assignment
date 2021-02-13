@@ -1,0 +1,282 @@
+\hypertarget{namespacerobot__user__interface}{}\section{robot\+\_\+user\+\_\+interface Namespace Reference}
+\label{namespacerobot__user__interface}\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacerobot__user__interface_ac0334cd2b07f8bc4474062eaaceab902}{position\+Callback} (msg)
+\begin{DoxyCompactList}\small\item\em Callback to constantly get the robot position. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_af8347c189738ddfec5e6582d1a8839fa}{user\+\_\+set\+\_\+position} ()
+\begin{DoxyCompactList}\small\item\em Function to get a new position from the user and check that it\textquotesingle{}s one of the catchable positions. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a137d7201aae4fbac4990876227d162f1}{move\+\_\+randomly} ()
+\begin{DoxyCompactList}\small\item\em Function to move in the direction received from the server. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a74312af906c16599bef2c4ade3ef87a4}{follow\+\_\+wall} ()
+\begin{DoxyCompactList}\small\item\em Function to make the robot follow the external walls. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a70a457867820599c4b2a30f4027dd513}{stop\+\_\+robot} ()
+\begin{DoxyCompactList}\small\item\em To stop the robot the linear velocity values are set to 0, evenmore the target to reach is set to the position in wich robot is, so that to make sure it won\textquotesingle{}t try to reach another position. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_ac0177573471df46aa7986edba5620184}{set\+\_\+target\+\_\+position} (target\+\_\+x, target\+\_\+y)
+\begin{DoxyCompactList}\small\item\em This function get two parameters, target\+\_\+x and target\+\_\+y and set the target position in wich robot has to go. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a20558ce4717c6399da8e04e96858203f}{distance} ()
+\begin{DoxyCompactList}\small\item\em Function to estimate the value of the distance between the robot positon and the target it has to reach. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a6c919b4750dd38ddd929c5e456053de0}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacerobot__user__interface_a93557af62ae5a9f9fb406de12d599a58}{actual\+\_\+position} = Point()
+\item 
+int \hyperlink{namespacerobot__user__interface_aa49c4c4b4c031611deca926a34deb345}{goal\+\_\+x} = 0
+\begin{DoxyCompactList}\small\item\em Variables to save the value of the target robot has to reach. \end{DoxyCompactList}\item 
+int \hyperlink{namespacerobot__user__interface_aee93dc3e48f178d62b1209aa13232be2}{goal\+\_\+y} = 0
+\item 
+bool \hyperlink{namespacerobot__user__interface_ab96d4afbc6f7d4bb5019beec53e4615d}{notify} = False
+\begin{DoxyCompactList}\small\item\em Variable to generate a message to reached position in the position\+Callback. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacerobot__user__interface_ab735683088fe7d67ce16d40c53b3208c}{set\+\_\+target} = False
+\item 
+int \hyperlink{namespacerobot__user__interface_a57ca0e32cc10313871da599206689de6}{dist} = 0
+\begin{DoxyCompactList}\small\item\em Initialize the distance to the target. \end{DoxyCompactList}\item 
+\hyperlink{namespacerobot__user__interface_ad8e7e9dc5f614912b17e97229d3bc726}{pub\+\_\+move\+\_\+base} = None
+\begin{DoxyCompactList}\small\item\em Initialize the publishers. \end{DoxyCompactList}\item 
+\hyperlink{namespacerobot__user__interface_aa95d3e42b12dbcb906f08ec10450e436}{pub\+\_\+twist} = None
+\item 
+\hyperlink{namespacerobot__user__interface_a18cc77d7f27b808397c9d58367a25280}{sub\+\_\+odom} = None
+\begin{DoxyCompactList}\small\item\em Initialize the odom subscriber. \end{DoxyCompactList}\item 
+\hyperlink{namespacerobot__user__interface_a95d6798bc3ba3f2e590443ca7ad8d7d4}{srv\+\_\+client\+\_\+wall\+\_\+follower} = None
+\begin{DoxyCompactList}\small\item\em Initialize the wall\+\_\+follower client. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespacerobot__user__interface_a20558ce4717c6399da8e04e96858203f}\label{namespacerobot__user__interface_a20558ce4717c6399da8e04e96858203f}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!distance@{distance}}
+\index{distance@{distance}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{distance()}{distance()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+distance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to estimate the value of the distance between the robot positon and the target it has to reach. 
+
+
+
+Definition at line 212 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a74312af906c16599bef2c4ade3ef87a4}\label{namespacerobot__user__interface_a74312af906c16599bef2c4ade3ef87a4}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!follow\+\_\+wall@{follow\+\_\+wall}}
+\index{follow\+\_\+wall@{follow\+\_\+wall}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{follow\+\_\+wall()}{follow\_wall()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+follow\+\_\+wall (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to make the robot follow the external walls. 
+
+
+
+Definition at line 130 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a6c919b4750dd38ddd929c5e456053de0}\label{namespacerobot__user__interface_a6c919b4750dd38ddd929c5e456053de0}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!main@{main}}
+\index{main@{main}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 227 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a137d7201aae4fbac4990876227d162f1}\label{namespacerobot__user__interface_a137d7201aae4fbac4990876227d162f1}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!move\+\_\+randomly@{move\+\_\+randomly}}
+\index{move\+\_\+randomly@{move\+\_\+randomly}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{move\+\_\+randomly()}{move\_randomly()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+move\+\_\+randomly (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to move in the direction received from the server. 
+
+
+
+Definition at line 113 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_ac0334cd2b07f8bc4474062eaaceab902}\label{namespacerobot__user__interface_ac0334cd2b07f8bc4474062eaaceab902}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!position\+Callback@{position\+Callback}}
+\index{position\+Callback@{position\+Callback}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{position\+Callback()}{positionCallback()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+position\+Callback (\begin{DoxyParamCaption}\item[{}]{msg }\end{DoxyParamCaption})}
+
+
+
+Callback to constantly get the robot position. 
+
+
+
+Definition at line 42 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_ac0177573471df46aa7986edba5620184}\label{namespacerobot__user__interface_ac0177573471df46aa7986edba5620184}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!set\+\_\+target\+\_\+position@{set\+\_\+target\+\_\+position}}
+\index{set\+\_\+target\+\_\+position@{set\+\_\+target\+\_\+position}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{set\+\_\+target\+\_\+position()}{set\_target\_position()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+set\+\_\+target\+\_\+position (\begin{DoxyParamCaption}\item[{}]{target\+\_\+x,  }\item[{}]{target\+\_\+y }\end{DoxyParamCaption})}
+
+
+
+This function get two parameters, target\+\_\+x and target\+\_\+y and set the target position in wich robot has to go. 
+
+
+
+Definition at line 180 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a70a457867820599c4b2a30f4027dd513}\label{namespacerobot__user__interface_a70a457867820599c4b2a30f4027dd513}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!stop\+\_\+robot@{stop\+\_\+robot}}
+\index{stop\+\_\+robot@{stop\+\_\+robot}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{stop\+\_\+robot()}{stop\_robot()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+stop\+\_\+robot (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+To stop the robot the linear velocity values are set to 0, evenmore the target to reach is set to the position in wich robot is, so that to make sure it won\textquotesingle{}t try to reach another position. 
+
+
+
+Definition at line 141 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_af8347c189738ddfec5e6582d1a8839fa}\label{namespacerobot__user__interface_af8347c189738ddfec5e6582d1a8839fa}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!user\+\_\+set\+\_\+position@{user\+\_\+set\+\_\+position}}
+\index{user\+\_\+set\+\_\+position@{user\+\_\+set\+\_\+position}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{user\+\_\+set\+\_\+position()}{user\_set\_position()}}
+{\footnotesize\ttfamily def robot\+\_\+user\+\_\+interface.\+user\+\_\+set\+\_\+position (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to get a new position from the user and check that it\textquotesingle{}s one of the catchable positions. 
+
+
+
+Definition at line 54 of file robot\+\_\+user\+\_\+interface.\+py.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacerobot__user__interface_a93557af62ae5a9f9fb406de12d599a58}\label{namespacerobot__user__interface_a93557af62ae5a9f9fb406de12d599a58}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!actual\+\_\+position@{actual\+\_\+position}}
+\index{actual\+\_\+position@{actual\+\_\+position}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{actual\+\_\+position}{actual\_position}}
+{\footnotesize\ttfamily robot\+\_\+user\+\_\+interface.\+actual\+\_\+position = Point()}
+
+
+
+Definition at line 15 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a57ca0e32cc10313871da599206689de6}\label{namespacerobot__user__interface_a57ca0e32cc10313871da599206689de6}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!dist@{dist}}
+\index{dist@{dist}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{dist}{dist}}
+{\footnotesize\ttfamily int robot\+\_\+user\+\_\+interface.\+dist = 0}
+
+
+
+Initialize the distance to the target. 
+
+
+
+Definition at line 27 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_aa49c4c4b4c031611deca926a34deb345}\label{namespacerobot__user__interface_aa49c4c4b4c031611deca926a34deb345}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!goal\+\_\+x@{goal\+\_\+x}}
+\index{goal\+\_\+x@{goal\+\_\+x}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{goal\+\_\+x}{goal\_x}}
+{\footnotesize\ttfamily int robot\+\_\+user\+\_\+interface.\+goal\+\_\+x = 0}
+
+
+
+Variables to save the value of the target robot has to reach. 
+
+
+
+Definition at line 18 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_aee93dc3e48f178d62b1209aa13232be2}\label{namespacerobot__user__interface_aee93dc3e48f178d62b1209aa13232be2}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!goal\+\_\+y@{goal\+\_\+y}}
+\index{goal\+\_\+y@{goal\+\_\+y}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{goal\+\_\+y}{goal\_y}}
+{\footnotesize\ttfamily int robot\+\_\+user\+\_\+interface.\+goal\+\_\+y = 0}
+
+
+
+Definition at line 19 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_ab96d4afbc6f7d4bb5019beec53e4615d}\label{namespacerobot__user__interface_ab96d4afbc6f7d4bb5019beec53e4615d}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!notify@{notify}}
+\index{notify@{notify}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{notify}{notify}}
+{\footnotesize\ttfamily bool robot\+\_\+user\+\_\+interface.\+notify = False}
+
+
+
+Variable to generate a message to reached position in the position\+Callback. 
+
+
+
+Definition at line 22 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_ad8e7e9dc5f614912b17e97229d3bc726}\label{namespacerobot__user__interface_ad8e7e9dc5f614912b17e97229d3bc726}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!pub\+\_\+move\+\_\+base@{pub\+\_\+move\+\_\+base}}
+\index{pub\+\_\+move\+\_\+base@{pub\+\_\+move\+\_\+base}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{pub\+\_\+move\+\_\+base}{pub\_move\_base}}
+{\footnotesize\ttfamily robot\+\_\+user\+\_\+interface.\+pub\+\_\+move\+\_\+base = None}
+
+
+
+Initialize the publishers. 
+
+
+
+Definition at line 31 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_aa95d3e42b12dbcb906f08ec10450e436}\label{namespacerobot__user__interface_aa95d3e42b12dbcb906f08ec10450e436}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!pub\+\_\+twist@{pub\+\_\+twist}}
+\index{pub\+\_\+twist@{pub\+\_\+twist}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{pub\+\_\+twist}{pub\_twist}}
+{\footnotesize\ttfamily robot\+\_\+user\+\_\+interface.\+pub\+\_\+twist = None}
+
+
+
+Definition at line 32 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_ab735683088fe7d67ce16d40c53b3208c}\label{namespacerobot__user__interface_ab735683088fe7d67ce16d40c53b3208c}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!set\+\_\+target@{set\+\_\+target}}
+\index{set\+\_\+target@{set\+\_\+target}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{set\+\_\+target}{set\_target}}
+{\footnotesize\ttfamily bool robot\+\_\+user\+\_\+interface.\+set\+\_\+target = False}
+
+
+
+Definition at line 24 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a95d6798bc3ba3f2e590443ca7ad8d7d4}\label{namespacerobot__user__interface_a95d6798bc3ba3f2e590443ca7ad8d7d4}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!srv\+\_\+client\+\_\+wall\+\_\+follower@{srv\+\_\+client\+\_\+wall\+\_\+follower}}
+\index{srv\+\_\+client\+\_\+wall\+\_\+follower@{srv\+\_\+client\+\_\+wall\+\_\+follower}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{srv\+\_\+client\+\_\+wall\+\_\+follower}{srv\_client\_wall\_follower}}
+{\footnotesize\ttfamily robot\+\_\+user\+\_\+interface.\+srv\+\_\+client\+\_\+wall\+\_\+follower = None}
+
+
+
+Initialize the wall\+\_\+follower client. 
+
+
+
+Definition at line 38 of file robot\+\_\+user\+\_\+interface.\+py.
+
+\mbox{\Hypertarget{namespacerobot__user__interface_a18cc77d7f27b808397c9d58367a25280}\label{namespacerobot__user__interface_a18cc77d7f27b808397c9d58367a25280}} 
+\index{robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}!sub\+\_\+odom@{sub\+\_\+odom}}
+\index{sub\+\_\+odom@{sub\+\_\+odom}!robot\+\_\+user\+\_\+interface@{robot\+\_\+user\+\_\+interface}}
+\subsubsection{\texorpdfstring{sub\+\_\+odom}{sub\_odom}}
+{\footnotesize\ttfamily robot\+\_\+user\+\_\+interface.\+sub\+\_\+odom = None}
+
+
+
+Initialize the odom subscriber. 
+
+
+
+Definition at line 35 of file robot\+\_\+user\+\_\+interface.\+py.
+

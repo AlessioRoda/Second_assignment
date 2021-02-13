@@ -1,0 +1,49 @@
+\hypertarget{robot__user__interface_8py}{}\section{scripts/robot\+\_\+user\+\_\+interface.py File Reference}
+\label{robot__user__interface_8py}\index{scripts/robot\+\_\+user\+\_\+interface.\+py@{scripts/robot\+\_\+user\+\_\+interface.\+py}}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespacerobot__user__interface}{robot\+\_\+user\+\_\+interface}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespacerobot__user__interface_ac0334cd2b07f8bc4474062eaaceab902}{robot\+\_\+user\+\_\+interface.\+position\+Callback} (msg)
+\begin{DoxyCompactList}\small\item\em Callback to constantly get the robot position. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_af8347c189738ddfec5e6582d1a8839fa}{robot\+\_\+user\+\_\+interface.\+user\+\_\+set\+\_\+position} ()
+\begin{DoxyCompactList}\small\item\em Function to get a new position from the user and check that it\textquotesingle{}s one of the catchable positions. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a137d7201aae4fbac4990876227d162f1}{robot\+\_\+user\+\_\+interface.\+move\+\_\+randomly} ()
+\begin{DoxyCompactList}\small\item\em Function to move in the direction received from the server. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a74312af906c16599bef2c4ade3ef87a4}{robot\+\_\+user\+\_\+interface.\+follow\+\_\+wall} ()
+\begin{DoxyCompactList}\small\item\em Function to make the robot follow the external walls. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a70a457867820599c4b2a30f4027dd513}{robot\+\_\+user\+\_\+interface.\+stop\+\_\+robot} ()
+\begin{DoxyCompactList}\small\item\em To stop the robot the linear velocity values are set to 0, evenmore the target to reach is set to the position in wich robot is, so that to make sure it won\textquotesingle{}t try to reach another position. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_ac0177573471df46aa7986edba5620184}{robot\+\_\+user\+\_\+interface.\+set\+\_\+target\+\_\+position} (target\+\_\+x, target\+\_\+y)
+\begin{DoxyCompactList}\small\item\em This function get two parameters, target\+\_\+x and target\+\_\+y and set the target position in wich robot has to go. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a20558ce4717c6399da8e04e96858203f}{robot\+\_\+user\+\_\+interface.\+distance} ()
+\begin{DoxyCompactList}\small\item\em Function to estimate the value of the distance between the robot positon and the target it has to reach. \end{DoxyCompactList}\item 
+def \hyperlink{namespacerobot__user__interface_a6c919b4750dd38ddd929c5e456053de0}{robot\+\_\+user\+\_\+interface.\+main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacerobot__user__interface_a93557af62ae5a9f9fb406de12d599a58}{robot\+\_\+user\+\_\+interface.\+actual\+\_\+position} = Point()
+\item 
+int \hyperlink{namespacerobot__user__interface_aa49c4c4b4c031611deca926a34deb345}{robot\+\_\+user\+\_\+interface.\+goal\+\_\+x} = 0
+\begin{DoxyCompactList}\small\item\em Variables to save the value of the target robot has to reach. \end{DoxyCompactList}\item 
+int \hyperlink{namespacerobot__user__interface_aee93dc3e48f178d62b1209aa13232be2}{robot\+\_\+user\+\_\+interface.\+goal\+\_\+y} = 0
+\item 
+bool \hyperlink{namespacerobot__user__interface_ab96d4afbc6f7d4bb5019beec53e4615d}{robot\+\_\+user\+\_\+interface.\+notify} = False
+\begin{DoxyCompactList}\small\item\em Variable to generate a message to reached position in the position\+Callback. \end{DoxyCompactList}\item 
+bool \hyperlink{namespacerobot__user__interface_ab735683088fe7d67ce16d40c53b3208c}{robot\+\_\+user\+\_\+interface.\+set\+\_\+target} = False
+\item 
+int \hyperlink{namespacerobot__user__interface_a57ca0e32cc10313871da599206689de6}{robot\+\_\+user\+\_\+interface.\+dist} = 0
+\begin{DoxyCompactList}\small\item\em Initialize the distance to the target. \end{DoxyCompactList}\item 
+\hyperlink{namespacerobot__user__interface_ad8e7e9dc5f614912b17e97229d3bc726}{robot\+\_\+user\+\_\+interface.\+pub\+\_\+move\+\_\+base} = None
+\begin{DoxyCompactList}\small\item\em Initialize the publishers. \end{DoxyCompactList}\item 
+\hyperlink{namespacerobot__user__interface_aa95d3e42b12dbcb906f08ec10450e436}{robot\+\_\+user\+\_\+interface.\+pub\+\_\+twist} = None
+\item 
+\hyperlink{namespacerobot__user__interface_a18cc77d7f27b808397c9d58367a25280}{robot\+\_\+user\+\_\+interface.\+sub\+\_\+odom} = None
+\begin{DoxyCompactList}\small\item\em Initialize the odom subscriber. \end{DoxyCompactList}\item 
+\hyperlink{namespacerobot__user__interface_a95d6798bc3ba3f2e590443ca7ad8d7d4}{robot\+\_\+user\+\_\+interface.\+srv\+\_\+client\+\_\+wall\+\_\+follower} = None
+\begin{DoxyCompactList}\small\item\em Initialize the wall\+\_\+follower client. \end{DoxyCompactList}\end{DoxyCompactItemize}
