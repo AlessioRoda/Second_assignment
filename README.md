@@ -24,4 +24,5 @@ The srv folder contains a file to define the type of the data that are returned 
 
 ## Comunication between nodes 
 
+![rosgraph](https://user-images.githubusercontent.com/48511957/107848524-59255a00-6df4-11eb-8f9f-f9fe00d28803.png)
 
