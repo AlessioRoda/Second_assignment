@@ -16,7 +16,7 @@ In this repository there are four folders:
 * src
 * srv
 
-The first one contains a launch file who permits to execute the entire program, so by launching the my_robot_controller.launch it's possible to run the robot user interface and other nodes, like move_base and wall_follower, that are already implemented and permit the robot to move in a certain position and to follow the external walls.
+The first one contains a launch file that permits to execute the entire program, so by launching the my_robot_controller.launch it's possible to run the robot user interface and other nodes, like move_base and wall_follower, that are already implemented and permit the robot to move in a certain position and to follow the external walls.
 
 In the "scripts" folder it's contained the robot_user_interface.py script, that is the user interface of the program. Here the program asks the user to give him the commands to decide wich operation should it execute and to do that it calls the services that are launched previously with the launch file.
 
