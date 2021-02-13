@@ -50,7 +50,7 @@ As previously mentioned, not all the positons are allowed, the only target posit
 When the position is randomly chosen the robot_user_interface node sends a request to server_second_assignment node, which will return one of the allowed positions. To do that the server generate a random number from 0 to 5 that is utilized as the index of the array in wich are contained the allowed positions.
 After having received the position either from the server or from the user, to move the robot it's set a field goal with the x and y coordinates of the target to reach
 
-To let the robot follow the external walls, the program only has to call the wall_follower service while to stop the robot the linear velocity is set to 0 and to make sure that the robot won't go to another position, user asks him before, the program sets a field goal with the coordinates of the position of the robot when it was ordered him to stop.
+To let the robot follow the external walls, the program only has to call the wall_follower service while to stop the robot the linear velocity is set to 0 and to make sure that the robot won't go to another position user asks him before, the program sets a field goal with the coordinates of the position of the robot when it was ordered him to stop.
 
 ### Behaviors
 
