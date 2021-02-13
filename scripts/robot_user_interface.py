@@ -97,10 +97,10 @@ def user_set_position():
 					
 
 		if (catchable_position==True):
-			    ## Send the values to the general function to reach a target
-				set_target_position(x,y)
 				## Make sure that the robot can't follow the wall
 				resp = srv_client_wall_follower(False)
+				## Send the values to the general function to reach a target
+				set_target_position(x,y)
 
 		else:
 				print("\nThe position you insert is not correct, try again, otherwise digit a string to exit")

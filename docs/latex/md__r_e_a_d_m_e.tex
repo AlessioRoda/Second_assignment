@@ -16,7 +16,7 @@ In this repository there are four folders\+:
 \item srv
 \end{DoxyItemize}
 
-The first one contains a launch file who permits to execute the entire program, so by launching the my\+\_\+robot\+\_\+controller.\+launch it\textquotesingle{}s possible to run the robot user interface and other nodes, like move\+\_\+base and wall\+\_\+follower, that are already implemented and permit the robot to move in a certain position and to follow the external walls.
+The first one contains a launch file that permits to execute the entire program, so by launching the my\+\_\+robot\+\_\+controller.\+launch it\textquotesingle{}s possible to run the robot user interface and other nodes, like move\+\_\+base and wall\+\_\+follower, that are already implemented and permit the robot to move in a certain position and to follow the external walls.
 
 In the \char`\"{}scripts\char`\"{} folder it\textquotesingle{}s contained the \hyperlink{robot__user__interface_8py}{robot\+\_\+user\+\_\+interface.\+py} script, that is the user interface of the program. Here the program asks the user to give him the commands to decide wich operation should it execute and to do that it calls the services that are launched previously with the launch file.
 
@@ -43,9 +43,9 @@ First, at the beginning of the execution the nodes /robot\+\_\+user\+\_\+interfa
 
 As previously mentioned, not all the positons are allowed, the only target position that robot is allowed to reach are \mbox{[}-\/4, -\/3\mbox{]}, \mbox{[}5, -\/3\mbox{]}, \mbox{[}-\/4, 2\mbox{]}, \mbox{[}-\/4, 7\mbox{]}, \mbox{[}5, -\/7\mbox{]}, \mbox{[}5, 1\mbox{]}, so if user chooses another position the program asks him to digit it agin.
 
-When the position is randomly chosen the \hyperlink{namespacerobot__user__interface}{robot\+\_\+user\+\_\+interface} node sends a request to server\+\_\+second\+\_\+assignment node, which will return one of the allowed positions. After having received the position either from the server or from the user, to move the robot it\textquotesingle{}s set a field goal with the x and y coordinates of the target to reach
+When the position is randomly chosen the \hyperlink{namespacerobot__user__interface}{robot\+\_\+user\+\_\+interface} node sends a request to server\+\_\+second\+\_\+assignment node, which will return one of the allowed positions. To do that the server generate a random number from 0 to 5 that is utilized as the index of the array in wich are contained the allowed positions. After having received the position either from the server or from the user, to move the robot it\textquotesingle{}s set a field goal with the x and y coordinates of the target to reach
 
-To let the robot follow the external walls, the program only has to call the wall\+\_\+follower service while to stop the robot the linear velocity is set to 0 and to make sure that the robot won\textquotesingle{}t go to another position, user asks him before, the program sets a field goal with the coordinates of the position of the robot when it was ordered him to stop.
+To let the robot follow the external walls, the program only has to call the wall\+\_\+follower service while to stop the robot the linear velocity is set to 0 and to make sure that the robot won\textquotesingle{}t go to another position user asks him before, the program sets a field goal with the coordinates of the position of the robot when it was ordered him to stop.
 
 \subsubsection*{Behaviors}
 
