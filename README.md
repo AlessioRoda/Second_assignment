@@ -16,7 +16,7 @@ In this repository there are four folders:
 * src
 * srv
 
-The first one contains a launch file who permits to execute the entire program, so the by launching the my_robot_controller.launch it's possible to run the robot user interface and other scripts, like move_base.py and wall_follower_switch.py, that are already implemented and  to permit the robot to move in a certain position and to follow the external walls.
+The first one contains a launch file who permits to execute the entire program, so by launching the my_robot_controller.launch it's possible to run the robot user interface and other scripts, like move_base.py and wall_follower_switch.py, that are already implemented and  to permit the robot to move in a certain position and to follow the external walls.
 
 In the "scripts" folder it's contained the robot_user_inteface.py script, that is the user interface of the program. Here the program asks to the user to give him the comamnds to decide wich operation should it execute and to do that it calls the services that are launched previously with the launch file.
 
@@ -35,20 +35,39 @@ The robot_user_interface also move the robot in a certain position by sending a 
 
 ## Robot behaviors and software architecture 
 
-### Architecture
+### Software architecture
 
 First, at the beginning of the execution the nodes /robot_user_interface and /server_second_assignment initialize the publishers and the subscibers with respect to the oter running nodes. After that the main part of the robot_user_interface has to ask in a innfinite time loop the commands to the user
 
-1) To randomly move ina one of the allowed positions
+1) To randomly move in one of the allowed positions
 2) Ask user to choose the target position for the robot
 3) Let the robot following the external walls 
 4) Stop the robot 
 
-As previously mentioned, not all the positons are allowed, the only target position that robot is allowed to reach are [-4, -3], [5, -3], [-4, 2], [-4, 7], 
-[5, -7], [5, 1], so if user choose another position the program asks him to digit it agin.
+As previously mentioned, not all the positons are allowed, the only target position that robot is allowed to reach are [-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1], so if user choose another position the program asks him to digit it agin.
 
 When the position is randomly choosen the robot_user_interface node sends a request to server_second_assignemnt node, which will return one of the allowed position.
 After having received the position either from the server or from the user, to move the robot it's set a field goal with the x and y coordinates of the target to reach
 
-To let the robot follow the external walls the program only has to call the service wall_follower_switch while to stop the robot the linear velocoty is set to 0 and to make sure that the robot won't go to anothre position user aske him before, the program sets a field goal with the coordinates of the position of the robo when it was ordered him to stop.
+To let the robot follow the external walls the program only has to call the service wall_follower_switch while to stop the robot the linear velocoty is set to 0 and to make sure that the robot won't go to anothre position, user asks him before, the program sets a field goal with the coordinates of the position of the robo when it was ordered him to stop.
 
+### Behaviors
+
+As it's possible to notice by having a look to the RVIZ simulation, at the beginning the robot doesn't completely know the entire map, so to move in a certain position it will learn the map by scanning it while it is moving. This means that sometimes when the robot has to reach a position it deosn't konow, it goes in a wrong direction at the beginning and when robot understands it, it comes back and search for another path. At the end, when the robot has seen the entire map it doesn't fail the optimal path to reach a certain position anymore.
+
+## Considerations
+
+The robot can successfully reach the positios and in genreal move avoiding the obstacles. The algorithm that is implemented to understand the map in which it moves is quite optimal in this case, since the dimension of the entire map is limited, maybe in a bigger and more complicate map it's possible that robot can get lost more time before it can learn the entire map.
+
+In the code to move in a certain position is addopted the move_base algorithm, it could also be possible to do it by implementing the bug0 algorithm and even ask to user to decide which kind of algorithm robot should use.
+
+## How to run the code 
+
+To run the cose it's necessary to have the slam_gmapping, final_assignment and robot_description packages inside its own workspace, then clone also this repository inside it and then, after having gone in your workspace folder in the terminal, execute the following commands:
+
+* roscore &
+* catkin_make
+* roslaunch final_assignment simulation_gmapping.launch
+* roslaunch second_assignment my_robot_controller.launch
+
+Then yuo shold see the RVIZ and Gazeebo simulation of the robot and of the map, then by digiting the commands on the ternìminal and by folllwing the instructions on the user unterface you can send commands to the robot. 
