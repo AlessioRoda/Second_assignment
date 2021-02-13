@@ -143,7 +143,7 @@ def stop_robot():
 	global set_target, pub_move_base, srv_client_wall_follower, pub_twist
 	global goal_x, goal_y, notify
 	
-	## Check that the robot doesn't follow thr wall
+	## Check that the robot doesn't follow the wall
 	resp = srv_client_wall_follower(False)
 	
 	## Set the value of velocity to 0	
@@ -239,10 +239,10 @@ def main():
     pub_move_base=rospy.Publisher('move_base/goal', MoveBaseActionGoal, queue_size=1)
     pub_twist = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
    
-    ## To make the robot follows the wall it's utilized the already implemented wall_follower_switch algorithm
+    ## To make the robot follows the wall it's utilized the already implemented wall_follower service
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
-    ## Connect to the server Server_second_assignment
+    ## Connect to the server_second_assignment node, the server that provides to give the random position
     srv_pos= rospy.ServiceProxy('/position', Server_second_assignment)
     
     
