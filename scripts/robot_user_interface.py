@@ -18,7 +18,7 @@ actual_position=Point()
 goal_x=0
 goal_y=0
 
-## Variable to generate a message to reached position in the positionCallback
+## Variable to generate a message of reached position in the positionCallback
 notify=False
 
 set_target=False
