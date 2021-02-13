@@ -1,13 +1,23 @@
 # Second_assignment
 
-In this repository it's implemented a simple user interface to permit to a genric robot to move in a definite map by avoiding the obstacles. In particular with this interface, user can ask to the robot to move in a random position between the six positions that are allowed, to move in a user definite position, to follow the external walls of the map and to stop in the last robot position.
+In this repository it's implemented a simple user interface to permit to a genric robot to move in a definite map by avoiding the obstacles. In particular with this interface, user can ask to the robot to move in a random position between the six positions that are allowed, to move in a user defined position, to follow the external walls of the map and to stop in the last robot position.
+
+To be executetd this interface needs other three packages (slam_gmapping, final_assignment and robot_description), without which is not posible to run this code, since some services that are required are contained in these packages.
 
 
 In this repository there are four folders: 
 
-*launch 
-*sripts
-*src
-*srv
+* launch 
+* sripts
+* src
+* srv
 
-The first one contains a launch file who permits to execute the entire program, so the by lunching the my_robot_controller.launch it's possible to run the robot user interface and o
+The first one contains a launch file who permits to execute the entire program, so the by lunching the my_robot_controller.launch it's possible to run the robot user interface and other scripts, like move_base.py and wall_follower_switch.py, that are already implemented and  to permit the robot to move in a certain position and to follow the external walls.
+
+In the script folder it's contained the robot_user_inteface.py script, that is the user interface of the program. Here the program asks to te user to give him the comamnds to decide wich operation should it execute and to do that it calls the services that are alunched previously with the launch file.
+
+The src folder contains the server_second_assignment.cpp code, that is a server that teturns randomly one of the six allowed positions.
+
+The srv folder contains a file to define the type of the data that are returned from the server.
+
+
