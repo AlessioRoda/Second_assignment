@@ -44,7 +44,7 @@ def positionCallback(msg):
     global actual_position, goal_x, goal_y, notify
     actual_position=msg.pose.pose.position
     
-    if (distance()<=1 and notify==True):
+    if (distance()<=0.4 and notify==True):
 		print("\nTarget reached!")
 		notify=False
     
