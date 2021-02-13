@@ -26,7 +26,6 @@ The "srv" folder contains a file to define the type of the data that are returne
 
 ## Comunication between nodes 
 
-<br />
 ![rosgraph](https://user-images.githubusercontent.com/48511957/107848524-59255a00-6df4-11eb-8f9f-f9fe00d28803.png)
 
 <br />
@@ -36,12 +35,20 @@ The robot_user_interface also move the robot in a certain position by sending a 
 
 ## Robot behaviors and software architecture 
 
-First at the beginning of the execution the nodes /robot_user_interface and /server_second_assignment initialize the publishers and the subscibers with respect to the oter running nodes. After that the main part of the robot_user_interface has to ask in a innfinite time loop the commands to the user
+### Architecture
+
+First, at the beginning of the execution the nodes /robot_user_interface and /server_second_assignment initialize the publishers and the subscibers with respect to the oter running nodes. After that the main part of the robot_user_interface has to ask in a innfinite time loop the commands to the user
 
 1) To randomly move ina one of the allowed positions
 2) Ask user to choose the target position for the robot
 3) Let the robot following the external walls 
 4) Stop the robot 
 
-As previously mentioned, not all the positons are allowed, only positions: [-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1]
+As previously mentioned, not all the positons are allowed, the only target position that robot is allowed to reach are [-4, -3], [5, -3], [-4, 2], [-4, 7], 
+[5, -7], [5, 1], so if user choose another position the program asks him to digit it agin.
+
+When the position is randomly choosen the robot_user_interface node sends a request to server_second_assignemnt node, which will return one of the allowed position.
+After having received the position either from the server or from the user, to move the robot it's set a field goal with the x and y coordinates of the target to reach
+
+To let the robot follow the external walls the program only has to call the service wall_follower_switch while to stop the robot the linear velocoty is set to 0 and to make sure that the robot won't go to anothre position user aske him before, the program sets a field goal with the coordinates of the position of the robo when it was ordered him to stop.
 
