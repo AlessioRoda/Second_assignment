@@ -28,24 +28,24 @@ The "srv" folder contains a file to define the type of the data that are returne
 
 ![rosgraph](https://user-images.githubusercontent.com/48511957/107848524-59255a00-6df4-11eb-8f9f-f9fe00d28803.png)
 
+<br />
 
 
-
-As it's possible to see in the picture, this is how the nodes communicate to each others: what it's interesting to consider is that the robot_user_interface node get the odom data to obtain the position of the robot in the map (by subscribing to the odom service) and can set the velocity of the robot by publishing a cmd_vel message to the Twist publisher.
+As it's possible to see in the picture, this is how the nodes communicate to each others: what it's interesting to consider is that the robot_user_interface node gets the odom data to obtain the position of the robot in the map (by subscribing to the odom service) and can set the velocity of the robot by publishing a cmd_vel message to the Twist publisher.
 The robot_user_interface also moves the robot in a certain position by sending a message of type move_base_msgs/MoveBaseActionGoal.
 
 ## Robot behaviors and software architecture
 
 ### Software architecture
 
-First, at the beginning of the execution the nodes /robot_user_interface and /server_second_assignment initialize the publishers and the subscribers with respect to the other running nodes. After that the main part of the robot_user_interface has to ask in an infinite time loop the commands to the user
+First, at the beginning of the execution the nodes /robot_user_interface and /server_second_assignment initialize the publishers and the subscribers with respect to the other running nodes. After that the main part of the robot_user_interface has to ask in an infinite loop the commands to the user
 
 1) To randomly move in one of the allowed positions
 2) Ask user to choose the target position for the robot
 3) Let the robot following the external walls
 4) Stop the robot
 
-As previously mentioned, not all the positons are allowed, the only target position that robot is allowed to reach are [-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1], so if user choose another position the program asks him to digit it agin.
+As previously mentioned, not all the positons are allowed, the only target position that robot is allowed to reach are [-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1], so if user chooses another position the program asks him to digit it agin.
 
 When the position is randomly chosen the robot_user_interface node sends a request to server_second_assignment node, which will return one of the allowed positions.
 After having received the position either from the server or from the user, to move the robot it's set a field goal with the x and y coordinates of the target to reach
@@ -54,7 +54,7 @@ To let the robot follow the external walls, the program only has to call the wal
 
 ### Behaviors
 
-As it's possible to notice by having a look to the RVIZ simulation, at the beginning the robot doesn't completely know the entire map, so to move in a certain position it will learn the map by scanning it while it is moving. This means that sometimes when the robot has to reach a position it doesn't know, it goes in a wrong direction at the beginning and when robot understands it, it comes back and searches for another path. At the end, when the robot has seen the entire map, it doesn't fail the optimal path to reach a certain position anymore.
+As it's possible to notice by having a look to the RVIZ simulation, at the beginning the robot doesn't completely know the entire map, so to move in a certain position it will learn the map by scanning it while it is moving. This means that sometimes when the robot has to reach a position it doesn't know, it goes in a wrong direction at the beginning and when robot understands it, it comes back and searches for another path to follow. At the end, when the robot has seen the entire map, it doesn't fail the optimal path to reach a certain position anymore.
 
 ## Considerations
 
