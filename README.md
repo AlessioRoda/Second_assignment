@@ -30,7 +30,6 @@ The "srv" folder contains a file to define the type of the data that are returne
 ![rosgraph](https://user-images.githubusercontent.com/48511957/107848524-59255a00-6df4-11eb-8f9f-f9fe00d28803.png)
 
 <br />
-<br />
 
 As it's possible to see in the picture, this is how the nodes comunicate to eachothers: what it's interesting to consider is that the robot_user_interface node get the odom data to obtain the position of the robot in the map (by subscribing to the odom service) and can set the velocity of the robot by publihing a cmd_vel message to the Twist pubblisher. 
 The robot_user_interface also move the robot in a certain position by sending a message of type move_base_msgs/MoveBaseActionGoal. 
