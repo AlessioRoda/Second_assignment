@@ -14,7 +14,7 @@ import math
 
 actual_position=Point()
 
-## Variables to save the value of the target we want to receive
+## Variables to save the value of the target roboto has to reach
 goal_x=0
 goal_y=0
 
@@ -65,7 +65,7 @@ def user_set_position():
 		
 		print("\n Please insert a position between {[-4, -3], [5, -3], [-4, 2], [-4, 7], [5, -7], [5, 1]}")
 		
-		## Check if the input that user give me is a number or not
+		## Check if the input that user gives is a number or not
 		try:
 			x = float(raw_input('x :'))
 			y = float(raw_input('y :'))
@@ -75,7 +75,7 @@ def user_set_position():
 			print("Char characters are not allowed, let's exit \n")
 			break
     
-		## Now to choose the target we consider the only possible cases we have
+		## Now to choose the target are considered the only possible cases we have
 		
 		if (y==-3 and x==-4 or x==5):
 				catchable_position=True
@@ -113,7 +113,7 @@ def user_set_position():
 def move_randomly():
 	global srv_client_wall_follower, srv_pos, actual_position
 	
-	## We have to ensure that the client wall_follower is disabled 
+	## I's necessary to ensure that the client wall_follower is disabled 
 	srv_client_wall_follower(False)
 	
 	print("\nActual robot position: "+str(actual_position))
@@ -126,7 +126,7 @@ def move_randomly():
 	return
     
     
-## Function to amke the robot follow the external walls
+## Function to make the robot follow the external walls
 def follow_wall():
 	
 	global srv_client_wall_follower
@@ -137,13 +137,13 @@ def follow_wall():
 	return
 	
 
-## To stop the robot I set the linear velocity values to 0, evenmore I set the target to reach to the position in wich robot is to make sure it won't try to reach another position
+## To stop the robot the linear velocity values are set to 0, evenmore the target to reach is set to the position in wich robot is, so that to make sure it won't try to reach another position
 def stop_robot():
 	
 	global set_target, pub_move_base, srv_client_wall_follower, pub_twist
 	global goal_x, goal_y, notify
 	
-	## I have to check that the robot doesn't follow thr wall
+	## Check that the robot doesn't follow thr wall
 	resp = srv_client_wall_follower(False)
 	
 	## Set the value of velocity to 0	
@@ -167,7 +167,7 @@ def stop_robot():
 	## To not generate a message to reached position
 	notify=False
 	
-	## I set the goal position as the last position in wich I am
+	## Set the goal position as the last position in wich robot is
 	goal_x=actual_position.x
 	goal_y=actual_position.y
 	
@@ -194,7 +194,7 @@ def set_target_position(target_x, target_y):
 	
 	print("\n Let's reach the position x="+str(target_x)+" y="+str(target_y))
 	
-	## I set the goal position as the one I received 
+	## Set the goal position as the one I received 
 	goal_x=target_x
 	goal_y=target_y
 	
@@ -216,7 +216,7 @@ def distance():
 	dist_x= actual_position.x-goal_x
 	dist_y= actual_position.y-goal_y
 	
-	## To estimate the distance we use the vector dsitance from the coordinate of the position
+	## To estimate the distance it's used the vector distance from the coordinate of the position to the actual robot position
 	dist=math.sqrt(pow(dist_x, 2)+pow(dist_y, 2))
 	
 	return dist
@@ -235,11 +235,11 @@ def main():
     sub_odom=rospy.Subscriber("/odom", Odometry, positionCallback)
     
    
-   #Pubblisher to pubblsh the poition in wich we want the robot to go and the velocity we want to set
+   #Pubblisher to pubblsh the poition in wich the robot has to go and the velocity to set
     pub_move_base=rospy.Publisher('move_base/goal', MoveBaseActionGoal, queue_size=1)
     pub_twist = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
    
-    ## To make the robot follow the wall we use the already implemented wall_follower_switch algorithm
+    ## To make the robot follows the wall it's utilized the already implemented wall_follower_switch algorithm
     srv_client_wall_follower = rospy.ServiceProxy(
         '/wall_follower_switch', SetBool)
     ## Connect to the server Server_second_assignment
@@ -248,7 +248,7 @@ def main():
     
     rate = rospy.Rate(20)
     
-    ## For the entire execution of the program it's shown an user interface to get the command the robot has to execute:
+    ## For the entire execution of the program it's shown an user interface to obtain the command the robot has to execute:
     ## robot can move in a random position, move in a specific position, follow the walls or stop in the last position.
     while not rospy.is_shutdown():
 
@@ -272,7 +272,7 @@ def main():
 		elif(command==4):
 			stop_robot()
 			
-		## If there's a not allowed command user has to give the command again	
+		## If there's a not allowed command user has to digit the command again	
 		else:
 			print("\n Probably you choose a command not allowed, please try again")
 		
